@@ -1,0 +1,25 @@
+{
+  "name": "blog-web-application",
+  "version": "1.0.0",
+  "description": "Blog web application using node and express",
+  "homepage": "https://github.com/tomagothi/Blog-Web-Application#readme",
+  "bugs": {
+    "url": "https://github.com/tomagothi/Blog-Web-Application/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomagothi/Blog-Web-Application.git"
+  },
+  "license": "ISC",
+  "author": "Lonnie Cox",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0"
+  }
+}
