@@ -57,25 +57,25 @@
         <span class="fs-4 text-body-primary">DogPost</span>
       </a> 
     </div>
-    <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-      <li><a href="/" class="nav-link px-2 <% if(currentSection === "Home") { %> link-secondary <% } %>">Home</a></li>
-      <li><a href="/blog" class="nav-link px-2 <% if(currentSection === "Blog") { %> link-secondary <% } %>">Blog</a></li>
-      <li><a href="/about" class="nav-link px-2 <% if(currentSection === "About") { %> link-secondary <% } %>">About DogPost</a></li>
-      <li><a href="/popular-dogs" class="nav-link px-2 <% if(currentSection === "Popular") { %> link-secondary <% } %>">Popular Dogs</a></li>
-      <li><a href="/pet-resources" class="nav-link px-2 <% if(currentSection === "Resources") { %> link-secondary <% } %>">Pet Resources</a></li>
-    </ul>
-    <div class="col-md-3 text-end"> 
-      <button type="button" class="btn btn-outline-primary me-2">
+    <% if(currentSection !== 'Login' && currentSection !== 'SignUp') { %>
+      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="/" class="nav-link px-2 <% if(currentSection === "Home") { %> link-secondary <% } %>">Home</a></li>
+        <li><a href="/blog" class="nav-link px-2 <% if(currentSection === "Blog") { %> link-secondary <% } %>">Blog</a></li>
+        <li><a href="/about" class="nav-link px-2 <% if(currentSection === "About") { %> link-secondary <% } %>">About DogPost</a></li>
+        <li><a href="/popular-dogs" class="nav-link px-2 <% if(currentSection === "Popular") { %> link-secondary <% } %>">Popular Dogs</a></li>
+        <li><a href="/pet-resources" class="nav-link px-2 <% if(currentSection === "Resources") { %> link-secondary <% } %>">Pet Resources</a></li>
+      </ul>
+      <div class="col-md-3 text-end text-body-primary"> 
         <% if (signedIn) { %>
-          Sign out
+          <span class="me-1 text-body-primary">Hi, <%= name %></span>
+          <button type="button" class="btn btn-outline-primary me-2" onclick="location.href='/signout'">Sign out</button>
         <% } else { %>
-          Login
+          <button type="button" class="btn btn-outline-primary me-2" onclick="location.href='/login'">Login</button>
+          <button type="button" class="btn btn-primary" onclick="location.href='/signup'">Sign-up</button> 
         <% } %>
-      </button>
-      <button type="button" class="btn btn-primary">Sign-up</button> 
-    </div>
+      </div>
+    <% } %>
   </header>
 </div>
 
 <main class="container">
-

@@ -1,0 +1,21 @@
+<%- include("partials/header.ejs", { 
+  signedIn: signedIn, 
+  currentSection: "Blog" , 
+  name: name 
+}) %>
+
+<div class="blog-content">
+  <h1><%= blogTitle %></h1>
+  <p><%= blogDate %> by <%= blogAuthor %></p>
+  <p><%- blogContent %></p>
+</div>
+<div class="blog-comments">
+  <% blogComments.forEach((comment) => { %>
+    <hr>
+    <h3><%= comment.name %></h3>
+    <p><%= comment.date %></p>
+    <p><%= comment.comment %></p>
+  <% }) %>
+</div>
+
+<%- include("partials/footer.ejs") %>
