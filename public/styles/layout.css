@@ -1,0 +1,8 @@
+.blog-content {
+  white-space: pre-wrap;
+}
+
+.profile-picture {
+  border-radius: 50%;
+  border: solid black 2px;
+}

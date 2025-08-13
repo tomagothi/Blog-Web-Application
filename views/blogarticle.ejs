@@ -4,18 +4,40 @@
   name: name 
 }) %>
 
-<div class="blog-content">
-  <h1><%= blogTitle %></h1>
-  <p><%= blogDate %> by <%= blogAuthor %></p>
-  <p><%- blogContent %></p>
-</div>
-<div class="blog-comments">
-  <% blogComments.forEach((comment) => { %>
-    <hr>
-    <h3><%= comment.name %></h3>
-    <p><%= comment.date %></p>
-    <p><%= comment.comment %></p>
-  <% }) %>
-</div>
+<article class="blog-post">
+  <div class="blog-content">
+    <h1><%= blogTitle %></h1>
+    <p><%= new Date(blogDate).toLocaleDateString("en-US", {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) %> by <a href=<%= "/user/" + blogAuthor %>><%= blogAuthor %></a></p>
+    <p><%- blogContent %></p>
+  </div>
+  <div class="blog-comments">
+    <% blogComments.forEach((comment) => { %>
+      <div class="d-flex flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top">
+        <img src=<%="/images/" + comment.name + ".jpg" %> class="d-block" onerror="this.onerror=null;this.src='/images/dog-chasing-tail-svgrepo-com.png'" alt="user profile photo" height="96px" loading="lazy">
+        <div>
+            <h3><%= comment.name %></h3>
+            <p><%= comment.date %></p>
+            <p><%= comment.comment %></p>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+  <hr>
+  <% if (signedIn) { %>
+    <form action="/addcomment" method="post">
+      <h4 class="h3 mb-3 fw-normal">Leave a comment</h4>
+      <textarea class="form-control py-2" rows="5" id="comment" name="comment"></textarea>
+      <input type="hidden" id="blogId" name="blogId" value=<%= blogId %>>
+      <div class="py-1">
+        <button class="btn btn-primary w-100 py-2" type="submit">Submit</button>
+      </div>
+    </form>
+
+  <% } else { %>
+    <div>
+      <p>Sign up or login to comment!</p>
+    </div>
+  <% } %>
+</article>
 
 <%- include("partials/footer.ejs") %>

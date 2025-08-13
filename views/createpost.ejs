@@ -1,0 +1,20 @@
+<%- include("partials/header.ejs", { 
+  signedIn: signedIn, 
+  currentSection: "Blog" , 
+  name: name 
+}) %>
+
+<form action="/createpost" method="post">
+  <h1 class="h3 mb-3 fw-normal">New Post</h1>
+  <div class="form-floating py-1">
+    <input type="text" class="form-control py-2" id="floatingTitle" name="title" placeholder="article title">
+    <label for="floatingTitle">Title</label>
+  </div>
+  <label class="py-2" for="formContent">Content</label>
+  <textarea class="form-control py-2" rows="15" id="formContent" name="content"></textarea>
+  <div class="py-1">
+    <button class="btn btn-primary w-100 py-2" type="submit">Create Post</button>
+  </div>
+</form>
+
+<%- include("partials/footer.ejs") %>

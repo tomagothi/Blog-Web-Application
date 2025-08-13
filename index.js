@@ -120,11 +120,37 @@ app.post("/signup", (req, res) => {
 
 app.get("/blog", (req, res) => {
   const recentArticles = blogArticles.slice(-3);
+  const firstBlogDate = new Date(blogArticles[0].date);
+  var firstTitle = firstBlogDate.toLocaleString("en-US", {month: "long"}) + " " + firstBlogDate.toLocaleDateString("en-US", {year: "numeric"});
+  var accordianObject = [{
+    title: firstTitle,
+    articles: []
+  }];
+
+  blogArticles.forEach(article => {
+    var currentBlogDate = new Date(article.date);
+    var currentTitle = currentBlogDate.toLocaleString("en-US", {month: "long"}) + " " + currentBlogDate.toLocaleDateString("en-US", {year: "numeric"});
+    var currentIndex = accordianObject.length - 1;
+    if (currentTitle !== accordianObject[currentIndex].title) {
+      accordianObject.push({
+        title: currentTitle,
+        articles: []
+      });
+      currentIndex++;
+    }
+
+    accordianObject[currentIndex].articles.push({
+      title: article.title,
+      id: article.id
+    });
+  });
 
   res.render("blog.ejs", {
     signedIn: userSignedIn,
     name: userName,
     featuredArticle: blogArticles[0],
+    featuredArticleImage: "/images/article-img-1.png",
+    accordianData: accordianObject,
     recentArticles: recentArticles
   });
 });
@@ -138,6 +164,7 @@ app.get("/blog/:id", (req, res) => {
       res.render("blogarticle.ejs", {
         signedIn: userSignedIn,
         name: userName,
+        blogId: blogId,
         blogTitle: article.title,
         blogDate: article.date,
         blogAuthor: article.author,
@@ -155,11 +182,92 @@ app.get("/blog/:id", (req, res) => {
   }
 });
 
+app.get("/createpost", (req, res) => {
+  if (userSignedIn) {
+    res.render("createpost.ejs", {
+      signedIn: true,
+      name: userName
+    });
+  } else {
+    res.redirect("/login");
+  }
+});
+
+app.post("/createpost", (req, res) => {
+  if (userSignedIn) {
+    const articleTitle = req.body["title"];
+    const articleContent = req.body["content"];
+    var newArticlePost = {
+      id: blogArticles.length + 1,
+      title: articleTitle,
+      author: userName,
+      date: new Date().toLocaleDateString("en-US"),
+      content: articleContent,
+      comments: []
+    };
+    blogArticles.push(newArticlePost);
+    res.redirect("/blog/" + newArticlePost.id);
+  } else {
+    res.redirect("/login");
+  }
+});
+
+app.get("/user/:id", (req, res) => {
+  const userId = req.params.id;
+  const user = registeredUsers.find(u => u.userName = userId);
+  const userPosts = blogArticles.filter(article => article.author === userId);
+  if (user) {
+    res.render("user.ejs", {
+      signedIn: userSignedIn,
+      name: userName,
+      userRecord: user,
+      userPosts: userPosts
+    });
+  } else {
+    res.redirect("/");
+  }
+});
+
+app.post("/addcomment", (req, res) => {
+  const blogId = Number(req.body["blogId"]);
+
+  if (blogId && userSignedIn) {
+    const userComment = req.body["comment"];
+    const blogIndex = blogArticles.findIndex(article => article.id === blogId);
+    if (blogIndex !== -1) {
+      blogArticles[blogIndex].comments.push({
+        name: userName,
+        date: new Date().toLocaleDateString("en-US"),
+        comment: userComment
+      });
+    }
+    res.redirect("/blog/" + blogId);
+  } else {
+    console.log("Blog ID: " + blogId);
+    console.log("User signed in: " + userSignedIn);
+    res.redirect("/blog");
+  }
+});
+
 app.get("/about", (req, res) => {
   res.render("about.ejs", {
     signedIn: userSignedIn,
     name: userName
-  })
+  });
+});
+
+app.get("/popular-dogs", (req, res) => {
+  res.render("populardogs.ejs", {
+    signedIn: userSignedIn,
+    name: userName
+  });
+});
+
+app.get("/pet-resources", (req, res) => {
+  res.render("petresources.ejs", {
+    signedIn: userSignedIn,
+    name: userName
+  });
 });
 
 app.listen(port, () => {

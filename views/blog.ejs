@@ -5,14 +5,64 @@
 }) %>
 
 <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
-  <div class="col-lg-6 px-0">
-    <h1 class="display-4 fst-italic"><%= featuredArticle.title %></h1>
-    <p class="lead my-3"><%= featuredArticle.content.substring(0, 75) %>...</p>
-    <p class="lead mb-0"><a href=<%= "blog/" + featuredArticle.id %> class="text-body-emphasis fw-bold">Continue reading...</a></p>
+  <div class="row g-5 pt-2">
+    <div class="col-lg-6 px-0">
+      <h1 class="display-4 fst-italic"><%= featuredArticle.title %></h1>
+      <p class="lead my-3"><%= featuredArticle.content.substring(0, 75) %>...</p>
+      <p class="lead mb-0"><a href=<%= "blog/" + featuredArticle.id %> class="text-body-emphasis fw-bold">Continue reading...</a></p>
+    </div>
+    <div class="col-lg-6 mx-auto">
+      <img src=<%= featuredArticleImage %> class="mx-lg-auto" onerror="this.onerror=null;this.src='/images/dog-chasing-tail-svgrepo-com.png'" alt="article image" height="250px" />
+    </div>
   </div>
-  <div class="row g-5">
+  <div class="row g-5 pt-2">
     <div class="col-md-8">
-
+      <article class="blog-post">
+        <h2 class="display-5 link-body-emphasis mb-1">A Word from Justice</h2>
+        <p class="blog-post-meta">
+          My dad would say thanks for looking at his website. I'm just going to bark incessantly in case you are
+          a stranger. If you're not a stranger, I'll bark even louder so that you know that I am excited to see
+          you, unless I don't like you. If I don't like you, I'm barking to let you know that I mean business, and
+          if you start rubbing my face it may not end well for you. I'll always welcome a denta-stick or if you want
+          to throw the ball in the backyard I won't complain!
+        </p>
+        <hr>
+        <p>
+          In case you come upon this in the wild west of the internet, this is not a real site. This is just a
+          practice excerise to learn express, node and freshen up on Bootstrap. Many of the features on this site
+          are stored on the server in local variables. There are dummy &quot;users&quot; and blog articles in order
+          to fill out the site.
+        </p>
+      </article>
+      <div class="accordion" id="accordion-container">
+        <% accordianData.forEach((blogData, idx) => { %>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target=<%= "#collapse" + idx %> aria-expanded="false" aria-controls=<%= "collapse" + idx %>>
+                <%= blogData.title %>
+              </button>
+            </h2>
+            <div id=<%= "collapse" + idx %> class="accordion-collapse collapse" data-bs-parent="accordion-container">
+              <div class="accordion-body">
+                <ul class="list-unstyled">
+                  <% blogData.articles.forEach((article) => { %>
+                    <li>
+                      <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none" href=<%="blog/" + article.id %>>
+                        <img src=<%="/images/article-img-" + article.id + ".png" %> onerror="this.onerror=null;this.src='/images/dog-chasing-tail-svgrepo-com.png'" alt="Article picture" height="64px">
+                        <div class="col-lg-8">
+                          <h6 class="mb-0">
+                            <%= article.title %>
+                          </h6>
+                        </div>
+                      </a>
+                    </li>
+                  <% }) %>
+                </ul>
+              </div>
+            </div>  
+          </div>
+        <% }) %>
+      </div>
     </div>
     <div class="col-md-4">
       <div class="position-sticky" style="top: 2rem;">
@@ -22,12 +72,10 @@
             <% recentArticles.forEach((article) => { %>
               <li> 
                 <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top" href=<%= "blog/" + article.id %>> 
-                  <svg aria-hidden="true" class="bd-placeholder-img " height="96" preserveAspectRatio="xMidYMid slice" width="100%" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="100%" height="100%" fill="#777"></rect>
-                  </svg>
+                  <img src=<%= "/images/article-img-" + article.id + ".png" %> onerror="this.onerror=null;this.src='/images/dog-chasing-tail-svgrepo-com.png'" alt="Article picture" height="64px">
                   <div class="col-lg-8">
                     <h6 class="mb-0"><%= article.title %></h6> 
-                    <small class="text-body-secondary"><%= article.date %></small>
+                    <small class="text-body-secondary"><%= new Date(article.date).toLocaleDateString("en-US", {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) %></small>
                   </div>
                 </a> 
               </li>
@@ -35,21 +83,11 @@
           </ul>
         </div>
         <div class="p-4">
-          <h4 class="fst-italic">Archives</h4>
-          <ol class="list-unstyled mb-0">
-            <li><a href="#">March 2021</a></li>
-            <li><a href="#">February 2021</a></li>
-            <li><a href="#">January 2021</a></li>
-            <li><a href="#">December 2020</a></li>
-            <li><a href="#">November 2020</a></li>
-            <li><a href="#">October 2020</a></li>
-            <li><a href="#">September 2020</a></li>
-            <li><a href="#">August 2020</a></li>
-            <li><a href="#">July 2020</a></li>
-            <li><a href="#">June 2020</a></li>
-            <li><a href="#">May 2020</a></li>
-            <li><a href="#">April 2020</a></li>
-          </ol>
+          <% if (signedIn) { %>
+            <button type="button" class="btn btn-primary" onclick="location.href='/createpost'">Create Post</button>
+          <% } else { %>
+            <h6 class="mb-0">Login or sign up to create posts!</h6>
+          <% } %>
         </div>
       </div>
     </div>

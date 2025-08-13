@@ -1,0 +1,41 @@
+<%- include("partials/header.ejs", { 
+  signedIn: signedIn, 
+  currentSection: "Blog" , 
+  name: name 
+}) %>
+
+<div class="container col-xxl-8 px-4 py-5">
+  <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+    <div class="col-10 col-sm-8 col-lg-6"> 
+      <img src=<%= "/images/" + userRecord.userName + ".jpg" %> class="d-block mx-lg-auto img-fluid profile-picture" alt=<%= "Photo of " + userRecord.userName %> height="500" loading="lazy"> 
+    </div>
+    <div class="col-lg-6">
+      <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3"><%= userRecord.userName %></h1>
+      <p class="lead">
+        Total Posts: <%= userPosts.length %>
+      </p>
+    </div>
+  </div>
+  <div>
+    <ul class="list-unstyled">
+      <% userPosts.forEach((post) => { %>
+        <li>
+          <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top" href=<%="/blog/" + post.id %>>
+            <img src=<%="/images/article-img-" + post.id + ".png" %> onerror="this.onerror=null;this.src='/images/dog-chasing-tail-svgrepo-com.png'" alt="Article picture" height="96px">
+            <div class="col-lg-8">
+              <h6 class="mb-0">
+                <%= post.title %>
+              </h6>
+              <small class="text-body-secondary">
+                <%= new Date(post.date).toLocaleDateString("en-US", {weekday: 'long' , year: 'numeric' , month: 'long' , day: 'numeric' }) %>
+              </small>
+            </div>
+          </a>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+</div>
+"
+
+<%- include("partials/footer.ejs") %>
